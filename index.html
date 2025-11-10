@@ -92,25 +92,17 @@
 
     .right h2 {
       font-size: 1.6rem;
-      color: #d63384;
+      color: #153d8b;
     }
 
-    .right h1 {
-      font-size: 3.5rem;
+    .right h3 {
+      font-size: 2.5rem;
       font-weight: 800;
       color: #111;
-      margin-bottom: 0.5rem;
     }
 
-    .right h1 span {
+    .right h3 span {
       color: #d63384;
-    }
-
-    .right p {
-      font-size: 1.1rem;
-      color: #fff;
-      font-weight: 600;
-      margin-bottom: 1rem;
     }
 
     /* Cards */
@@ -157,8 +149,8 @@
     }
 
     .card-option img {
-      width: 100px;
-      height: 150px;
+      width: 90px;
+      height: 120px;
       object-fit: contain;
     }
 
@@ -225,20 +217,96 @@
       background: #0f3a86;
     }
 
-    @media (max-width: 1000px) {
+    /* ----------- Responsive (Mobile Portrait) ----------- */
+    @media (max-width: 1000px) and (orientation: portrait) {
+      body {
+        overflow-y: auto;
+        height: auto;
+      }
+
       .container {
         flex-direction: column;
+        gap: 2rem;
         height: auto;
       }
+
       .left, .right {
         width: 100%;
+        padding: 0 1rem;
       }
+
+      .main-image {
+        height: 250px;
+      }
+
       .small-gallery {
-        flex-direction: column;
+        flex-direction: row;
+        gap: 0.5rem;
         height: auto;
       }
+
       .small-gallery .card {
-        height: 200px;
+        height: 100px;
+      }
+
+      .right {
+        align-items: center;
+        text-align: center;
+        padding: 0;
+      }
+
+      .card-option {
+        width: 90%;
+      }
+    }
+
+    /* ----------- Landscape on Mobile/Tablets ----------- */
+    @media (max-width: 1000px) and (orientation: landscape) {
+      body {
+        height: auto;
+        overflow-y: auto;
+      }
+
+      .container {
+        flex-direction: row;
+        gap: 1rem;
+        height: auto;
+        padding: 1rem;
+      }
+
+      .left {
+        flex: 1;
+      }
+
+      .right {
+        flex: 1;
+        padding: 1rem;
+        gap: 1rem;
+      }
+
+      .main-image {
+        height: 45vh;
+      }
+
+      .small-gallery {
+        height: 20vh;
+      }
+
+      .card-option {
+        padding: 1rem;
+      }
+
+      .card-option img {
+        width: 70px;
+        height: 90px;
+      }
+
+      .card-text h3 {
+        font-size: 1.2rem;
+      }
+
+      .card-text p {
+        font-size: 0.9rem;
       }
     }
   </style>
@@ -249,12 +317,12 @@
     <!-- LEFT SIDE IMAGES -->
     <div class="left">
       <div class="main-image">
-        <img src="GTEC_Conference Facility_(Front View).jpg" alt="Main Hall">
+        <img src="https://images.unsplash.com/photo-1503428593586-e225b39bddfe?auto=format&fit=crop&w=800&q=80" alt="Main Hall">
       </div>
       <div class="small-gallery">
-        <div class="card"><img src="inner.jpg" alt="Hall 1"></div>
-        <div class="card"><img src="pergola1.jpg" alt="Hall 2"></div>
-        <div class="card"><img src="inner1.jpg" alt="Hall 3"></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=500&q=80" alt="Hall 1"></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=500&q=80" alt="Hall 2"></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1485217988980-11786ced9454?auto=format&fit=crop&w=500&q=80" alt="Hall 3"></div>
       </div>
     </div>
 
@@ -363,4 +431,3 @@
   </script>
 </body>
 </html>
-
