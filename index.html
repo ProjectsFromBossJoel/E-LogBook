@@ -328,28 +328,26 @@
       </div>
     </div>
     </div>
-
-    <!-- RIGHT SIDE CONTENT -->
-    <div class="right">
-      <div class="card-option register" onclick="openModal('register')">
-        <div class="card-text">
-          <h3>New Registration</h3>
-          <p>New Guest & First-time Participant</p>
-        </div>
-        <img src="https://cdn-icons-png.flaticon.com/512/9131/9131529.png" alt="New Registration">
-      </div>
-
-      <div class="card-option checkin" onclick="openModal('login')">
-        <div class="card-text">
-          <h3>Registered Already</h3>
-          <p>Confirm with 5-digit ID to check in</p>
-        </div>
-        <img src="https://cdn-icons-png.flaticon.com/512/1256/1256650.png" alt="Check-in">
-      </div>
+    
+    <!-- RIGHT SIDE CONTENT (EVENT CARDS) -->
+<div class="right">
+  <div class="card-option register" onclick="window.location.href='event1.html'">
+    <div class="card-text">
+      <h3>Event 1</h3>
+      <p>National Cybersecurity Educational Conference</p>
     </div>
+    <img src="cybersecurity.jpg" alt="Event 1 Image">
   </div>
 
-  <br>
+  <div class="card-option checkin" onclick="window.location.href='event2.html'">
+    <div class="card-text">
+      <h3>Event 2</h3>
+      <p>Bridge Lounge 2025</p>
+    </div>
+    <img src="bridge_lounge.jpg" alt="Event 2 Image">
+  </div>
+</div>
+
 
   <!-- Registration Modal -->
   <div class="modal" id="registerModal">
@@ -433,6 +431,7 @@
   </script>
 </body>
 </html>
+
 
 
 
