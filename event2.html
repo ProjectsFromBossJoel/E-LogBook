@@ -306,81 +306,76 @@
   </div>
 
   <script>
-    const registerModal = document.getElementById("registerModal");
-    const loginModal = document.getElementById("loginModal");
+  const registerModal = document.getElementById("registerModal");
+  const loginModal = document.getElementById("loginModal");
 
-    function openModal(type) {
-      if (type === "register") registerModal.classList.add("active");
-      else loginModal.classList.add("active");
-    }
-
-    window.onclick = function (event) {
-      if (event.target === registerModal) registerModal.classList.remove("active");
-      if (event.target === loginModal) loginModal.classList.remove("active");
-    };
-
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwQjxArQwDulokowocm8n3JIY7o1vG4qrkYKnb9SfwVWQr0HYCvyumlJCu1xZ_yjUDHYA/exec";
-
-
-document.getElementById("registerForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const name = document.getElementById("name").value;
-  const phone = document.getElementById("phone").value;
-  const email = document.getElementById("email").value;
-  const uniqueId = Math.floor(10000 + Math.random() * 90000);
-
-  try {
-    const response = await fetch(scriptURL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "register", name, phone, email, id: uniqueId })
-    });
-    const result = await response.json();
-    if(result.status === "success"){
-      alert(`Registration Complete! Your ID is ${uniqueId}`);
-      registerModal.classList.remove("active");
-      document.getElementById("registerForm").reset();
-    } else {
-      alert("Error: " + result.message);
-    }
-  } catch (error) {
-    alert("Error submitting form. Please try again.");
+  function openModal(type) {
+    if (type === "register") registerModal.classList.add("active");
+    else loginModal.classList.add("active");
   }
-});
 
+  window.onclick = function (event) {
+    if (event.target === registerModal) registerModal.classList.remove("active");
+    if (event.target === loginModal) loginModal.classList.remove("active");
+  };
 
-    
+  const scriptURL = "YOUR_WEB_APP_URL_HERE"; // Replace with your deployed Apps Script URL
 
-    document.getElementById("loginForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const checkId = document.getElementById("checkId").value;
-      try {
-  const response = await fetch(scriptURL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ action: "checkin", checkId })
+  // Registration form
+  document.getElementById("registerForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("name").value;
+    const phone = document.getElementById("phone").value;
+    const email = document.getElementById("email").value;
+    const uniqueId = Math.floor(10000 + Math.random() * 90000);
+
+    try {
+      const response = await fetch(scriptURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "register", name, phone, email, id: uniqueId })
+      });
+      const result = await response.json();
+      if(result.status === "success"){
+        alert(`Registration Complete! Your ID is ${uniqueId}`);
+        registerModal.classList.remove("active");
+        document.getElementById("registerForm").reset();
+      } else {
+        alert("Error: " + result.message);
+      }
+    } catch (error) {
+      alert("Error submitting form. Please try again.");
+    }
   });
-  const result = await response.json();
-  if(result.status === "success"){
-    alert("Check-in successful!");
-    loginModal.classList.remove("active");
-    document.getElementById("loginForm").reset();
-  } else {
-    alert("Error: " + result.message);
-  }
-} catch (error) {
-  alert("Error checking in. Please try again.");
-}
 
+  // Check-in form
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const checkId = document.getElementById("checkId").value;
+
+    try {
+      const response = await fetch(scriptURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "checkin", checkId })
+      });
+      const result = await response.json();
+      if(result.status === "success"){
+        alert("Check-in successful!");
         loginModal.classList.remove("active");
         document.getElementById("loginForm").reset();
-      } catch (error) {
-        alert("Error checking in. Please try again.");
+      } else {
+        alert("Error: " + result.message);
       }
-    });
-  </script>
+    } catch (error) {
+      alert("Error checking in. Please try again.");
+    }
+  });
+</script>
+
 </body>
 </html>
+
 
 
 
