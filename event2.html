@@ -355,13 +355,23 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
       e.preventDefault();
       const checkId = document.getElementById("checkId").value;
       try {
-        await fetch(scriptURL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "checkin", checkId })
-        });
-        alert("Check-in successful!");
+  const response = await fetch(scriptURL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "checkin", checkId })
+  });
+  const result = await response.json();
+  if(result.status === "success"){
+    alert("Check-in successful!");
+    loginModal.classList.remove("active");
+    document.getElementById("loginForm").reset();
+  } else {
+    alert("Error: " + result.message);
+  }
+} catch (error) {
+  alert("Error checking in. Please try again.");
+}
+
         loginModal.classList.remove("active");
         document.getElementById("loginForm").reset();
       } catch (error) {
@@ -371,6 +381,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
   </script>
 </body>
 </html>
+
 
 
 
