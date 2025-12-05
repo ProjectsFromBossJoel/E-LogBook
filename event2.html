@@ -321,27 +321,35 @@
 
     const scriptURL = "https://script.google.com/macros/s/AKfycbwQjxArQwDulokowocm8n3JIY7o1vG4qrkYKnb9SfwVWQr0HYCvyumlJCu1xZ_yjUDHYA/exec";
 
-    document.getElementById("registerForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const name = document.getElementById("name").value;
-      const phone = document.getElementById("phone").value;
-      const email = document.getElementById("email").value;
-      const uniqueId = Math.floor(10000 + Math.random() * 90000);
 
-      try {
-        await fetch(scriptURL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "register", name, phone, email, id: uniqueId })
-        });
-        alert(`Registration Complete! Your ID is ${uniqueId}`);
-        registerModal.classList.remove("active");
-        document.getElementById("registerForm").reset();
-      } catch (error) {
-        alert("Error submitting form. Please try again.");
-      }
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const email = document.getElementById("email").value;
+  const uniqueId = Math.floor(10000 + Math.random() * 90000);
+
+  try {
+    const response = await fetch(scriptURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "register", name, phone, email, id: uniqueId })
     });
+    const result = await response.json();
+    if(result.status === "success"){
+      alert(`Registration Complete! Your ID is ${uniqueId}`);
+      registerModal.classList.remove("active");
+      document.getElementById("registerForm").reset();
+    } else {
+      alert("Error: " + result.message);
+    }
+  } catch (error) {
+    alert("Error submitting form. Please try again.");
+  }
+});
+
+
+    
 
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -363,6 +371,7 @@
   </script>
 </body>
 </html>
+
 
 
 
