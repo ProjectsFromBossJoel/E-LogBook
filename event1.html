@@ -328,6 +328,42 @@ body {
   gap: 12px;
 }
 
+/* === LOADING OVERLAY === */
+#loadingOverlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s ease-in-out;
+  z-index: 9999;
+}
+
+#loadingOverlay.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Spinner */
+.loader {
+  width: 70px;
+  height: 70px;
+  border: 6px solid #d63384;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+    
 </style>
 
   
@@ -394,65 +430,133 @@ body {
     </div>
   </div>
 
-  <script>
-    const registerModal = document.getElementById("registerModal");
-    const loginModal = document.getElementById("loginModal");
+  <!-- Loading Overlay -->
+<div id="loadingOverlay" style="
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s ease;
+  z-index: 9999;
+">
+  <div style="
+    width: 80px;
+    height: 80px;
+    border: 7px solid #fff;
+    border-top-color: #d63384;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  "></div>
+</div>
 
-    function openModal(type) {
-      if (type === "register") registerModal.classList.add("active");
-      else loginModal.classList.add("active");
-    }
+<style>
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+</style>
 
-    window.onclick = function (event) {
-      if (event.target === registerModal) registerModal.classList.remove("active");
-      if (event.target === loginModal) loginModal.classList.remove("active");
-    };
+<script>
+const registerModal = document.getElementById("registerModal");
+const loginModal = document.getElementById("loginModal");
+const loadingOverlay = document.getElementById("loadingOverlay");
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycbyxWedXKetKRN1MqS0zDXBcrRba0TzP8VyzZ9rVke4BZUNAkQQN1Vs5-QhOg6_TpY4KGg/exec";
+function openModal(type) {
+  if (type === "register") registerModal.classList.add("active");
+  else loginModal.classList.add("active");
+}
 
-    document.getElementById("registerForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const name = document.getElementById("name").value;
-      const phone = document.getElementById("phone").value;
-      const email = document.getElementById("email").value;
-      const uniqueId = Math.floor(10000 + Math.random() * 90000);
+window.onclick = function (event) {
+  if (event.target === registerModal) registerModal.classList.remove("active");
+  if (event.target === loginModal) loginModal.classList.remove("active");
+};
 
-      try {
-        await fetch(scriptURL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "register", name, phone, email, id: uniqueId })
-        });
-        alert(`Registration Complete! Your ID is ${uniqueId}`);
-        registerModal.classList.remove("active");
-        document.getElementById("registerForm").reset();
-      } catch (error) {
-        alert("Error submitting form. Please try again.");
-      }
+const scriptURL = "https://script.google.com/macros/s/AKfycbyxWedXKetKRN1MqS0zDXBcrRba0TzP8VyzZ9rVke4BZUNAkQQN1Vs5-QhOg6_TpY4KGg/exec";
+
+// === SHOW LOADING ===
+function showLoading() {
+  loadingOverlay.style.visibility = "visible";
+  loadingOverlay.style.opacity = "1";
+}
+
+// === HIDE LOADING ===
+function hideLoading() {
+  loadingOverlay.style.opacity = "0";
+  setTimeout(() => {
+    loadingOverlay.style.visibility = "hidden";
+  }, 300);
+}
+
+// === REGISTER FORM ===
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  showLoading();
+
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const email = document.getElementById("email").value;
+  const uniqueId = Math.floor(10000 + Math.random() * 90000);
+
+  try {
+    await fetch(scriptURL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "register", name, phone, email, id: uniqueId })
     });
 
-    document.getElementById("loginForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const checkId = document.getElementById("checkId").value;
-      try {
-        await fetch(scriptURL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "checkin", checkId })
-        });
-        alert("Check-in successful!");
-        loginModal.classList.remove("active");
-        document.getElementById("loginForm").reset();
-      } catch (error) {
-        alert("Error checking in. Please try again.");
-      }
+    hideLoading();
+    alert(`Registration Complete! Your ID is ${uniqueId}`);
+    registerModal.classList.remove("active");
+    document.getElementById("registerForm").reset();
+
+  } catch (error) {
+    hideLoading();
+    alert("Error submitting form. Please try again.");
+  }
+});
+
+// === CHECK-IN FORM ===
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  showLoading();
+
+  const checkId = document.getElementById("checkId").value;
+
+  try {
+    await fetch(scriptURL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "checkin", checkId })
     });
-  </script>
+
+    hideLoading();
+    alert("Check-in successful!");
+    loginModal.classList.remove("active");
+    document.getElementById("loginForm").reset();
+
+  } catch (error) {
+    hideLoading();
+    alert("Error checking in. Please try again.");
+  }
+});
+</script>
+
+  
+  <div id="loadingOverlay">
+  <div class="loader"></div>
+</div>
+
 </body>
 
 </html>
+
 
 
 
